@@ -1,25 +1,27 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+var summaries = new[]
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.MapGet("/forecast", () =>
+{
+    var forecast = Enumerable.Range(0, 5).Select(i =>
+        new WeatherForecast
+        (
+            DateTime.Now.AddDays(i),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)])
+        )
+    .ToArray();
 
-app.UseRouting();
+    return forecast;
+});
 
-app.UseAuthorization();
 
-app.MapRazorPages();
 
 app.Run();
