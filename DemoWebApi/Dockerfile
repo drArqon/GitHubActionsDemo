@@ -5,6 +5,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+
+FROM node:6.1.0-wheezy 
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["DemoWebApi/DemoWebApi.csproj", "DemoWebApi/"]
