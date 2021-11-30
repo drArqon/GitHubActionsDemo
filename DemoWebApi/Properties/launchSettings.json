@@ -10,6 +10,7 @@
   "profiles": {
     "DemoWebApi": {
       "commandName": "Project",
+      "launchUrl": "swagger/index.html",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -19,6 +20,7 @@
     },
     "IIS Express": {
       "commandName": "IISExpress",
+      "launchUrl": "swagger/index.html",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
