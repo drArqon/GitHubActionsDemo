@@ -31,5 +31,5 @@ jobs:
       if: success() || failure()    # run this step even if previous step failed
       with:
         name: Unit Test Results            # Name of the check run which will be created
-        path: /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/DemoWebApi.Test/TestResults/test-results.trx   # Path to test results
+        path: ${{env.GITHUB_WORKSPACE}}/DemoWebApi.Test/TestResults/test-results.trx   # Path to test results
         reporter: dotnet-trx        # Format of test results
