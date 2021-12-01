@@ -21,10 +21,26 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+      
+    - name: Sonarqube Begin
+      run: | 
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        dotnet sonarscanner begin /k:"drArqon_GitHubActionsDemo" /o:"drarqon" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverageReportPaths="./sonarqubecoverage/SonarQube.xml"
+        
     - name: Build
       run: dotnet build --no-restore
+      
     - name: Test
-      run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx"
+      run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+      
+    - name: Generate Coverage Report
+      run: reportgenerator "-reports:*/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+      
+    - name: Sonarqube end
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Test Report
       uses: dorny/test-reporter@v1
@@ -33,3 +49,4 @@ jobs:
         name: Unit Test Results            # Name of the check run which will be created
         path: ${{ github.workspace }}/DemoWebApi.Test/TestResults/test-results.trx   # Path to test results
         reporter: dotnet-trx        # Format of test results
+    
