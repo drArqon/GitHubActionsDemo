@@ -30,7 +30,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx" --settings coverlet.runsettings
+      run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx"
       
     - name: Sonarqube end
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
