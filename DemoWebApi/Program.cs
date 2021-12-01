@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("DemoWebApi.Test")]
@@ -40,6 +41,13 @@ app.MapGet("/forecast", () =>
     return forecast;
 }).WithName("GetWeatherForecast");
 
+app.MapGet("/break", (string dir) =>
+{
+    string strCmdText = @"/C dir c:\files\" + dir;
+    ProcessStartInfo info = new ProcessStartInfo("CMD.exe", strCmdText);
+    Process.Start(info);
 
+    return "";
+});
 
 app.Run();
